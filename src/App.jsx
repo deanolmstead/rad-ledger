@@ -114,7 +114,7 @@ export default function App() {
                   id: Date.now(),
                   type: "credit",
                   amount: val,
-                  note: "Loot acquired",
+                  note: "Money added",
                   category: "Credit",
                   ts: Date.now(),
                 },
@@ -126,14 +126,14 @@ export default function App() {
     );
     setFundAmount("");
     setView("dashboard");
-    showToast(`${formatCurrency(val)} added to stash!`);
+    showToast(`${formatCurrency(val)} added!`);
   }
 
   function handleSpend() {
     const val = parseFloat(amount);
     if (isNaN(val) || val <= 0) return;
     if (val > kid.balance) {
-      showToast("Insufficient rad credits!", "error");
+      showToast("Insufficient balance!", "error");
       return;
     }
     setKids((prev) =>
@@ -196,14 +196,14 @@ export default function App() {
   }
 
   function handleReset() {
-    if (!confirm(`Irradiate all data for ${kid.name}?`)) return;
+    if (!confirm(`Reset all data for ${kid.name}?`)) return;
     setKids((prev) =>
       prev.map((k, i) =>
         i === activeKid ? { ...defaultKidData(k.name), id: i } : k
       )
     );
     setView("dashboard");
-    showToast("Stash irradiated");
+    showToast("Account reset");
   }
 
   const pctSpent =
@@ -249,7 +249,7 @@ export default function App() {
           <div>
             <div style={styles.logoMark}>☢️</div>
           </div>
-          <h1 style={styles.title}>Rad Ledger</h1>
+          <h1 style={styles.title}>Ledger</h1>
           <div style={styles.headerRight} />
         </div>
 
@@ -331,7 +331,7 @@ export default function App() {
                       </button>
                     </div>
                   )}
-                  <div style={styles.balanceLabel}>Rad Credits</div>
+                  <div style={styles.balanceLabel}>Balance</div>
                 </div>
                 <div style={styles.balanceAmount}>
                   {formatCurrency(kid.balance)}
@@ -367,28 +367,28 @@ export default function App() {
                 onClick={() => setView("fund")}
               >
                 <span style={styles.actionIcon}>+</span>
-                Add Loot
+                Add Money
               </button>
               <button
                 style={{ ...styles.actionBtn, ...styles.actionBtnRed }}
                 onClick={() => setView("add")}
               >
                 <span style={styles.actionIcon}>−</span>
-                Trade Post
+                Deduct Money
               </button>
               <button
                 style={{ ...styles.actionBtn, ...styles.actionBtnBlue }}
                 onClick={() => setView("history")}
               >
                 <span style={styles.actionIcon}>≡</span>
-                Chronicle
+                History
               </button>
             </div>
 
             {/* Category breakdown */}
             {Object.keys(categoryTotals).length > 0 && (
               <div style={styles.card}>
-                <h3 style={styles.cardTitle}>Loot Breakdown</h3>
+                <h3 style={styles.cardTitle}>Spending Breakdown</h3>
                 {Object.entries(categoryTotals)
                   .sort((a, b) => b[1] - a[1])
                   .map(([cat, total]) => {
@@ -437,7 +437,7 @@ export default function App() {
                     style={styles.seeAllBtn}
                     onClick={() => setView("history")}
                   >
-                    See chronicle →
+                    See history →
                   </button>
                 </div>
                 {kid.transactions.slice(0, 3).map((tx) => (
@@ -448,16 +448,16 @@ export default function App() {
 
             {kid.transactions.length === 0 && (
               <div style={styles.emptyState}>
-                <div style={styles.emptyIcon}>☢️</div>
-                <div style={styles.emptyText}>No transmissions logged</div>
+                <div style={styles.emptyIcon}>💰</div>
+                <div style={styles.emptyText}>No transactions logged</div>
                 <div style={styles.emptySubtext}>
-                  Acquire loot to get started
+                  Add money to get started
                 </div>
               </div>
             )}
 
             <button style={styles.resetBtn} onClick={handleReset}>
-              Irradiate Account
+              Reset Account
             </button>
           </div>
         )}
@@ -469,11 +469,11 @@ export default function App() {
               <button style={styles.backBtn} onClick={() => setView("dashboard")}>
                 ← Back
               </button>
-              <h2 style={styles.formTitle}>Acquire Loot</h2>
+              <h2 style={styles.formTitle}>Add Money</h2>
               <p style={styles.formSub}>
-                Adding to <strong>{kid.name}</strong>'s stash
+                Adding to <strong>{kid.name}</strong>'s balance
               </p>
-              <label style={styles.label}>Rad Credits</label>
+              <label style={styles.label}>Amount</label>
               <div style={styles.amountInputWrap}>
                 <span style={styles.currencySymbol}>$</span>
                 <input
@@ -501,7 +501,7 @@ export default function App() {
                 ))}
               </div>
               <button style={styles.submitBtnGreen} onClick={handleAddFunds}>
-                Add to Stash
+                Add Money
               </button>
             </div>
           </div>
@@ -514,12 +514,12 @@ export default function App() {
               <button style={styles.backBtn} onClick={() => setView("dashboard")}>
                 ← Back
               </button>
-              <h2 style={styles.formTitle}>Make a Trade</h2>
+              <h2 style={styles.formTitle}>Deduct Money</h2>
               <p style={styles.formSub}>
-                Stash: <strong>{formatCurrency(kid.balance)}</strong>
+                Balance: <strong>{formatCurrency(kid.balance)}</strong>
               </p>
 
-              <label style={styles.label}>Credits Spent</label>
+              <label style={styles.label}>Amount</label>
               <div style={styles.amountInputWrap}>
                 <span style={styles.currencySymbol}>$</span>
                 <input
@@ -534,7 +534,7 @@ export default function App() {
                 />
               </div>
 
-              <label style={styles.label}>Trade Type</label>
+              <label style={styles.label}>Category</label>
               <div style={styles.categoryGrid}>
                 {EMOJI_CATEGORIES.map((c) => (
                   <button
@@ -554,18 +554,18 @@ export default function App() {
                 ))}
               </div>
 
-              <label style={styles.label}>Intel (optional)</label>
+              <label style={styles.label}>Note (optional)</label>
               <input
                 style={styles.textInput}
                 type="text"
-                placeholder="What was acquired?"
+                placeholder="What was this for?"
                 value={note}
                 onChange={(e) => setNote(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSpend()}
               />
 
               <button style={styles.submitBtnRed} onClick={handleSpend}>
-                Execute Trade
+                Deduct Money
               </button>
             </div>
           </div>
@@ -579,11 +579,11 @@ export default function App() {
                 <button style={styles.backBtn} onClick={() => setView("dashboard")}>
                   ← Back
                 </button>
-                <h2 style={styles.formTitle}>{kid.name}'s Chronicle</h2>
+                <h2 style={styles.formTitle}>{kid.name}'s History</h2>
               </div>
               {kid.transactions.length === 0 && (
                 <div style={styles.emptyState}>
-                  <div style={styles.emptyText}>No transmissions</div>
+                  <div style={styles.emptyText}>No transactions</div>
                 </div>
               )}
               {kid.transactions.map((tx) => (
