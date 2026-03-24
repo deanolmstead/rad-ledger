@@ -5,12 +5,12 @@ const STORAGE_KEY = "kids-spending-tracker-v1";
 const KIDS = ["Grayson", "Riley"];
 
 const EMOJI_CATEGORIES = [
-  { label: "🥫 Rations", value: "Rations" },
-  { label: "⚙️ Artifacts", value: "Artifacts" },
-  { label: "🧰 Scavenged", value: "Scavenged" },
-  { label: "📡 Broadcasts", value: "Broadcasts" },
-  { label: "☢️ Wasteland Transit", value: "Transit" },
-  { label: "💀 Unknown Origin", value: "Unknown" },
+  { label: "🍔 Food", value: "Rations" },
+  { label: "🎮 Entertainment", value: "Artifacts" },
+  { label: "👕 Clothing", value: "Scavenged" },
+  { label: "📚 Education", value: "Broadcasts" },
+  { label: "🚗 Transport", value: "Transit" },
+  { label: "📦 Other", value: "Unknown" },
 ];
 
 const CATEGORY_COLORS = {
@@ -247,7 +247,7 @@ export default function App() {
       <header style={styles.header}>
         <div style={styles.headerInner}>
           <div>
-            <div style={styles.logoMark}>☢️</div>
+            <div style={styles.logoMark}>📒</div>
           </div>
           <h1 style={styles.title}>Ledger</h1>
           <div style={styles.headerRight} />
